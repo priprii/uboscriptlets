@@ -4,40 +4,38 @@
 /// dependency run-at.fn
 // example.com##+js(rplpa, selector, attr, search, replace)
 function rplpa(
-	selector = '',
-	attr = '',
-	search = '',
-	replace = ''
+    selector = '',
+    attr = '',
+    search = '',
+    replace = ''
 ) {
-	if ( selector === '' || search === '' ) { return; }
-	
-	const replaceattr = () => {
-        const elems = document.querySelectorAll(selector);
-		try {
-			for ( const el of elems ) {
-				if ( !el.hasAttribute(attr) ) { continue; }
-				
-				const val = el.getAttribute(attr);
-				if ( typeof val !== 'string' ) { continue; }
-				if ( val.includes(search) === false ) { continue; }
+    if ( selector === '' || attr === '' || search === '' ) { return; }
 
-				el.setAttribute(attr, val.replaceAll(search, replace));
-			}
-		} catch { }
+    const apply = () => {
+        const elems = document.querySelectorAll(selector);
+        for ( const el of elems ) {
+            if ( !el.hasAttribute(attr) ) { continue; }
+
+            const val = el.getAttribute(attr);
+            if ( typeof val !== 'string' ) { continue; }
+            if ( val.includes(search) === false ) { continue; }
+
+            el.setAttribute(attr, val.replaceAll(search, replace));
+        }
     };
-	
-	let scheduled = false;
+
+    let scheduled = false;
     const observer = new MutationObserver(() => {
         if ( scheduled ) { return; }
         scheduled = true;
         requestAnimationFrame(() => {
             scheduled = false;
-            replaceattr();
+            apply();
         });
     });
 
     runAt(() => {
-        replaceattr();
+        apply();
         observer.observe(document.documentElement, {
             childList: true,
             subtree: true,
