@@ -1,9 +1,9 @@
-/// replace-partial-attr.js
-/// alias rplpa.js
+/// rplpa.js
+/// alias rplpa
 /// world ISOLATED
 /// dependency run-at.fn
 // example.com##+js(rplpa, selector, attr, search, replace)
-function replacePartialAttr(
+function rplpa(
 	selector = '',
 	attr = '',
 	search = '',
